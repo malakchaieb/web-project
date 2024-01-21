@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login/Register Page</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+</head>
+
+<body class="bg-gray-100">
+
+    <div class="min-h-screen flex items-center justify-center">
+        <div class="bg-white p-8 rounded shadow-md w-96">
+            <!-- Tabs -->
+            <form id="loginForm">
+                <div class="space-y-12">
+                    <div class="border-b border-gray-900/10 pb-12">
+                        <h2 class="text-base font-semibold leading-7 text-gray-900">Register</h2>
+                        <div class="mt-10 grid grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-6">
+                            <div class="sm:col-span-3">
+                                <label for="first-name" class="block text-sm font-medium leading-6 text-gray-900">First
+                                    name</label>
+                                <div class="mt-2">
+                                    <input type="text" name="firstname" id="firstname" autocomplete="given-name"
+                                        class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6">
+                                </div>
+                            </div>
+
+                            <div class="sm:col-span-3">
+                                <label for="last-name" class="block text-sm font-medium leading-6 text-gray-900">Last
+                                    name</label>
+                                <div class="mt-2">
+                                    <input type="text" name="lastname" id="lastname" autocomplete="family-name"
+                                        class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6">
+                                </div>
+                            </div>
+
+                            <div class="sm:col-span-4">
+                                <label for="email" class="block text-sm font-medium leading-6 text-gray-900">Email
+                                    address</label>
+                                <div class="mt-2">
+                                    <input id="email" name="email" type="email" autocomplete="email"
+                                        class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6">
+                                </div>
+                            </div>
+                            <div class="sm:col-span-3">
+                                <label for="username"
+                                    class="block text-sm font-medium leading-6 text-gray-900">Username</label>
+                                <div class="mt-2">
+                                    <input type="text" name="username" id="username" autocomplete="given-name"
+                                        class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6">
+                                </div>
+                            </div>
+
+                            <div class="sm:col-span-3">
+                                <label for="password"
+                                    class="block text-sm font-medium leading-6 text-gray-900">Password</label>
+                                <div class="mt-2">
+                                    <input type="password" name="password" id="password" autocomplete="family-name"
+                                        class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6">
+                                </div>
+                            </div>
+
+
+                        </div>
+
+                    </div>
+
+                    <div class="mt-6 flex items-center justify-end gap-x-6">
+                        <a href="./"><span type="button"
+                                class="rounded-md bg-red-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-red-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-red-600">You
+                                have
+                                an account? Login</span></a>
+                        <button type="submit"
+                            class="rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">Register</button>
+                    </div>
+            </form>
+        </div>
+    </div>
+
+
+</body>
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        // Assuming you have a login form with id="loginForm"
+        const loginForm = document.getElementById('loginForm');
+
+        loginForm.addEventListener('submit', function (event) {
+            event.preventDefault(); // Prevent the default form submission
+
+            // Get the form data
+            const formData = new FormData(loginForm);
+            const loginData = {};
+            formData.forEach((value, key) => {
+                loginData[key] = value;
+            });
+
+            // Make the API call
+            fetch('http://127.0.0.1/api-malak/auth/auth-file/create-user.php', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(loginData),
+            })
+                .then(response => response.json())
+                .then(data => {
+                    // Handle the API response
+                    console.log(data);
+                    alert(data.message)
+                    if (data.status == 1) { window.location.href = './'; }
+
+                    // You can perform further actions based on the API response here
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    alert(error);
+                    window.location.href = './register';
+                    // Handle errors here
+                });
+        });
+    });
+</script>
+
+</html>
